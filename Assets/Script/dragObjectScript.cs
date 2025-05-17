@@ -3,19 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class dragObjectScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
+public class dragObjectScript : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+{
     private RectTransform rectTransform;
     private Canvas canvas;
+
+    [SerializeField] private GameObject target;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        canvas = GetComponentInParent<Canvas>(); // penting: agar drag bekerja dalam scale canvas
+        canvas = GetComponentInParent<Canvas>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // Bisa tambahkan efek saat mulai drag
+        if (target != null)
+        {
+            target.SetActive(true);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -25,6 +31,17 @@ public class dragObjectScript : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // Bisa tambahkan aksi saat selesai drag
+        if (target != null)
+        {
+            target.SetActive(false);
+        }
+    }
+
+    void OnDisable()
+    {
+        if (target != null)
+        {
+            target.SetActive(false);
+        }
     }
 }
